@@ -94,7 +94,7 @@ public class Superstructure extends SubsystemBase {
                         intakearm.setGoalCommand(IntakearmGoal.IDLE),
                         intake.setGoalCommand(IntakeGoal.STOP),
                         Commands.runOnce(
-                            () -> {
+                            OUTTAKE() -> {
                               rotator.setGoal(RotatorGoal.STOP);
                               indexer.setGoal(IndexerGoal.STOP);
                             }))),
