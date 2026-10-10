@@ -94,7 +94,7 @@ public class Superstructure extends SubsystemBase {
                         intakearm.setGoalCommand(IntakearmGoal.IDLE),
                         intake.setGoalCommand(IntakeGoal.STOP),
                         Commands.runOnce(
-                            () -> {
+                            OUTTAKE() -> {
                               rotator.setGoal(RotatorGoal.STOP);
                               indexer.setGoal(IndexerGoal.STOP);
                             }))),
@@ -182,7 +182,7 @@ public class Superstructure extends SubsystemBase {
                         flywheel.setGoalCommand(FlywheelGoal.ACTIVE),
                         Commands.runOnce(
                             () -> {
-                              rotator.setGoal(RotatorGoal.OUTTAKE);
+                              intake.setGoal(IntakeGoal.OUTTAKE);
                               indexer.setGoal(IndexerGoal.OUTTAKE);
                             }))),
             Map.entry(
