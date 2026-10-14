@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.autos;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -21,8 +17,8 @@ import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 import frc.robot.util.geometry.AllianceFlipUtil;
 
-public class MidAuto extends SequentialCommandGroup {
-  public MidAuto(
+public class LeftRush extends SequentialCommandGroup {
+  public LeftRush(
       Superstructure superstructure,
       Turret turret,
       Hood hood,
@@ -36,18 +32,9 @@ public class MidAuto extends SequentialCommandGroup {
             hood.zeroCommand(),
             intakearm.zeroCommand(),
             hanger.zeroCommand()),
-        resetOdomToPath("M1", drive).withTimeout(0.2),
-        generatePath("M1"),
-        superstructure.setGoal(SuperstructureState.ACTIVESHOOTING).withTimeout(0.2),
-        superstructure.setGoal(SuperstructureState.SHOOTING).withTimeout(3),
-        superstructure.setGoal(SuperstructureState.ACTIVESHOOTING).withTimeout(0.2),
-        intakearm.setGoalCommand(IntakearmGoal.DEPLOYED).withTimeout(0.2),
-        Commands.parallel(generatePath("M2"), superstructure.setGoal(SuperstructureState.INTAKE)),
-        superstructure.setGoal(SuperstructureState.INTAKESTOP).withTimeout(0.2),
-        intakearm.setGoalCommand(IntakearmGoal.STOWED).withTimeout(0.2),
-        superstructure.setGoal(SuperstructureState.ACTIVESHOOTING).withTimeout(0.2),
-        superstructure.setGoal(SuperstructureState.SHOOTING).withTimeout(3),
-        superstructure.setGoal(SuperstructureState.ACTIVESHOOTING).withTimeout(0.2));
+        resetOdomToPath("LeftRush", drive).withTimeout(0.2),
+        generatePath("LeftRush")
+        );
   }
 
   public static Command resetOdomToPath(String pathName, Drive drive) {

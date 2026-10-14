@@ -17,8 +17,8 @@ import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 import frc.robot.util.geometry.AllianceFlipUtil;
 
-public class LeftAuto extends SequentialCommandGroup {
-  public LeftAuto(
+public class RightRush extends SequentialCommandGroup {
+  public RightRush(
       Superstructure superstructure,
       Turret turret,
       Hood hood,
@@ -32,22 +32,8 @@ public class LeftAuto extends SequentialCommandGroup {
             hood.zeroCommand(),
             intakearm.zeroCommand(),
             hanger.zeroCommand()),
-        resetOdomToPath("L3", drive),
-        intakearm.setGoalCommand(IntakearmGoal.DEPLOYED).withTimeout(0.2),
-        superstructure.setGoal(SuperstructureState.INTAKE).withTimeout(0.2),
-        generatePath("L3"),
-        Commands.parallel(
-            generatePath("L2"),
-            superstructure.setGoal(SuperstructureState.INTAKESTOP).withTimeout(0.2)),
-        intakearm.setGoalCommand(IntakearmGoal.STOWED).withTimeout(0.2),
-        superstructure.setGoal(SuperstructureState.ACTIVESHOOTING).withTimeout(0.5),
-        superstructure.setGoal(SuperstructureState.SHOOTING).withTimeout(3),
-        superstructure.setGoal(SuperstructureState.ACTIVESHOOTING).withTimeout(0.2)
-        // ,
-        // generatePath("L2")
-        //
-        // superstructure.setGoal(SuperstructureState.INTAKESTOP).withTimeout(0.2),
-        // superstructure.setGoal(SuperstructureState.SHOOTING).withTimeout(3.0)
+        resetOdomToPath("RightRush", drive).withTimeout(0.2),
+        generatePath("RightRush")
         );
   }
 

@@ -21,10 +21,15 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.FieldConstants.AprilTagLayoutType;
-import frc.robot.autos.LeftAuto;
-import frc.robot.autos.MidAuto;
-import frc.robot.autos.MidAutoShort;
-import frc.robot.autos.RightAuto;
+import frc.robot.autos.DoubleSweepOutpost;
+import frc.robot.autos.LeftDoubleSweep;
+import frc.robot.autos.LeftRush;
+import frc.robot.autos.LeftSingleSweep;
+import frc.robot.autos.MidDepot;
+import frc.robot.autos.MidTower;
+import frc.robot.autos.RightDoubleSweep;
+import frc.robot.autos.RightRush;
+import frc.robot.autos.RightSingleSweep;
 import frc.robot.commands.AutoAlignCommand;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
@@ -114,9 +119,9 @@ public class RobotContainer {
   private final Trigger shootTrigger = controller.R2();
   private final Trigger passTrigger = controller.triangle();
   private final Trigger fixShootTrigger = controller.circle();
-  private final Trigger climbTrigger = controller.povDown();
-  private final Trigger zeroClimbTrigger = controller.povUp();
-  private final Trigger driveToClimb = controller.povLeft();
+  private final Trigger climbTrigger = testController.povDown();
+  private final Trigger zeroClimbTrigger = testController.povUp();
+  private final Trigger driveToClimb = testController.povLeft();
   private final Trigger autoTrench = controller.povRight();
   private final Trigger robotHeadSwitchTrigger = controller.touchpad();
   private final Trigger driveFaceToPointTrigger = controller.cross();
@@ -313,13 +318,23 @@ public class RobotContainer {
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
     // autoChooser.addOption("Auto-Blue", AutoBuilder.buildAuto("Auto-Blue"));
     autoChooser.addOption(
-        "LEFT", new LeftAuto(superstructure, turret, hood, intakearm, hanger, drive));
+        "Left Single Sweep", new LeftSingleSweep(superstructure, turret, hood, intakearm, hanger, drive));
     autoChooser.addOption(
-        "MID", new MidAuto(superstructure, turret, hood, intakearm, hanger, drive));
+        "Left Double Sweep", new LeftDoubleSweep(superstructure, turret, hood, intakearm, hanger, drive));
     autoChooser.addOption(
-        "MIDSHORT", new MidAutoShort(superstructure, turret, hood, intakearm, hanger, drive));
+        "Left Rush", new LeftRush(superstructure, turret, hood, intakearm, hanger, drive));
     autoChooser.addOption(
-        "RIGHT", new RightAuto(superstructure, turret, hood, intakearm, hanger, drive));
+        "Mid Depot", new MidDepot(superstructure, turret, hood, intakearm, hanger, drive));
+    autoChooser.addOption(
+        "Mid Tower", new MidTower(superstructure, turret, hood, intakearm, hanger, drive));
+    autoChooser.addOption(
+        "Right Single Sweep", new RightSingleSweep(superstructure, turret, hood, intakearm, hanger, drive));
+    autoChooser.addOption(
+        "Right Double Sweep", new RightDoubleSweep(superstructure, turret, hood, intakearm, hanger, drive));
+    autoChooser.addOption(
+        "Right Rush", new RightRush(superstructure, turret, hood, intakearm, hanger, drive));
+    autoChooser.addOption(
+        "Double Sweep Outpost", new DoubleSweepOutpost(superstructure, turret, hood, intakearm, hanger, drive));
     // autoChooser.addDefaultOption(
     //     "LEFT", new LeftAuto(superstructure, turret, hood, intakearm, hanger, drive));
     // Set up SysId routines
@@ -574,6 +589,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("Shooting", superstructure.setGoal(SuperstructureState.SHOOTING));
     NamedCommands.registerCommand(
         "Active Shooting", superstructure.setGoal(SuperstructureState.ACTIVESHOOTING));
+    NamedCommands.registerCommand(
+        "Deployed", intakearm.setGoalCommand(IntakearmGoal.DEPLOYED));
+    NamedCommands.registerCommand(
+            "Intake", superstructure.setGoal(SuperstructureState.INTAKE));
     System.out.println("Auto Commands Regisered");
   }
 }

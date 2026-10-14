@@ -10,13 +10,15 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.hanger.Hanger;
 import frc.robot.subsystems.intakearm.Intakearm;
+import frc.robot.subsystems.intakearm.Intakearm.IntakearmGoal;
 import frc.robot.subsystems.shooter.hood.Hood;
 import frc.robot.subsystems.shooter.turret.Turret;
 import frc.robot.subsystems.superstructure.Superstructure;
+import frc.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 import frc.robot.util.geometry.AllianceFlipUtil;
 
-public class RightAuto extends SequentialCommandGroup {
-  public RightAuto(
+public class RightSingleSweep extends SequentialCommandGroup {
+  public RightSingleSweep(
       Superstructure superstructure,
       Turret turret,
       Hood hood,
@@ -30,8 +32,18 @@ public class RightAuto extends SequentialCommandGroup {
             hood.zeroCommand(),
             intakearm.zeroCommand(),
             hanger.zeroCommand()),
-        resetOdomToPath("R4", drive),
-        generatePath("R4"));
+        resetOdomToPath("RightSweepIn", drive),
+        intakearm.setGoalCommand(IntakearmGoal.DEPLOYED).withTimeout(0.2),
+        superstructure.setGoal(SuperstructureState.INTAKE).withTimeout(0.2),
+        generatePath("RightSweepIn"),
+        Commands.parallel(
+            generatePath("RightSweepOut"),
+            superstructure.setGoal(SuperstructureState.INTAKESTOP).withTimeout(0.2)),
+        intakearm.setGoalCommand(IntakearmGoal.STOWED).withTimeout(0.2),
+        superstructure.setGoal(SuperstructureState.ACTIVESHOOTING).withTimeout(0.5),
+        superstructure.setGoal(SuperstructureState.SHOOTING).withTimeout(3),
+        superstructure.setGoal(SuperstructureState.ACTIVESHOOTING).withTimeout(0.2)
+    );
   }
 
   public static Command resetOdomToPath(String pathName, Drive drive) {
