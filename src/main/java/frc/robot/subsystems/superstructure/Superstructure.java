@@ -119,8 +119,8 @@ public class Superstructure extends SubsystemBase {
                         flywheel.setGoalCommand(FlywheelGoal.ACTIVE),
                         Commands.runOnce(
                             () -> {
+                              intake.setGoal(IntakeGoal.STOP);
                               rotator.setGoal(RotatorGoal.STOP);
-                              indexer.setGoal(IndexerGoal.STOP);
                             }))),
             Map.entry(
                 SuperstructureState.SHOOTING,
@@ -183,7 +183,7 @@ public class Superstructure extends SubsystemBase {
                         Commands.runOnce(
                             () -> {
                               intake.setGoal(IntakeGoal.OUTTAKE);
-                              indexer.setGoal(IndexerGoal.OUTTAKE);
+                              rotator.setGoal(RotatorGoal.OUTTAKE);
                             }))),
             Map.entry(
                 SuperstructureState.TRENCH,

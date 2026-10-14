@@ -10,9 +10,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.hanger.Hanger;
 import frc.robot.subsystems.intakearm.Intakearm;
+import frc.robot.subsystems.intakearm.Intakearm.IntakearmGoal;
 import frc.robot.subsystems.shooter.hood.Hood;
 import frc.robot.subsystems.shooter.turret.Turret;
 import frc.robot.subsystems.superstructure.Superstructure;
+import frc.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 import frc.robot.util.geometry.AllianceFlipUtil;
 
 public class LeftAuto extends SequentialCommandGroup {
@@ -30,11 +32,20 @@ public class LeftAuto extends SequentialCommandGroup {
             hood.zeroCommand(),
             intakearm.zeroCommand(),
             hanger.zeroCommand()),
-        resetOdomToPath("L4", drive),
-        generatePath("L4")
+        resetOdomToPath("L3", drive),
+        intakearm.setGoalCommand(IntakearmGoal.DEPLOYED).withTimeout(0.2),
+        superstructure.setGoal(SuperstructureState.INTAKE).withTimeout(0.2),
+        generatePath("L3"),
+        Commands.parallel(
+            generatePath("L2"),
+            superstructure.setGoal(SuperstructureState.INTAKESTOP).withTimeout(0.2)),
+        intakearm.setGoalCommand(IntakearmGoal.STOWED).withTimeout(0.2),
+        superstructure.setGoal(SuperstructureState.ACTIVESHOOTING).withTimeout(0.5),
+        superstructure.setGoal(SuperstructureState.SHOOTING).withTimeout(3),
+        superstructure.setGoal(SuperstructureState.ACTIVESHOOTING).withTimeout(0.2)
         // ,
         // generatePath("L2")
-        // ,
+        //
         // superstructure.setGoal(SuperstructureState.INTAKESTOP).withTimeout(0.2),
         // superstructure.setGoal(SuperstructureState.SHOOTING).withTimeout(3.0)
         );

@@ -37,7 +37,7 @@ public class MidAutoShort extends SequentialCommandGroup {
             hanger.zeroCommand()),
         resetOdomToPath("M1", drive).withTimeout(0.2),
         generatePath("M1"),
-        superstructure.setGoal(SuperstructureState.ACTIVESHOOTING).withTimeout(0.2),
+        superstructure.setGoal(SuperstructureState.ACTIVESHOOTING).withTimeout(0.5),
         superstructure.setGoal(SuperstructureState.SHOOTING).withTimeout(3),
         superstructure.setGoal(SuperstructureState.ACTIVESHOOTING).withTimeout(0.2));
   }
